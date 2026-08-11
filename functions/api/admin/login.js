@@ -1,4 +1,4 @@
-import { json, makeSession, safePasswordEqual, sessionCookie } from '../../_lib.js';
+import { json, makeSession, safePasswordEqual, sessionCookie } from '../../../src/functions-lib.js';
 export async function onRequestPost({ request, env }) {
   if (!env.ADMIN_PASSWORD || !env.SESSION_SECRET) return json({ ok:false, error:'Configure ADMIN_PASSWORD e SESSION_SECRET no Cloudflare.' }, 503);
   let body;
