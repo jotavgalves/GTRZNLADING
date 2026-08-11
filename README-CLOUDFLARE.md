@@ -21,7 +21,7 @@ Importe `jotavgalves/GTRZNLADING` via integração Git.
 
 - Production branch: `main`
 - Framework preset: nenhum
-- Build command: `exit 0`
+- Build command: deixe vazio
 - Build output directory: `.`
 - Root directory: raiz do repositório
 
