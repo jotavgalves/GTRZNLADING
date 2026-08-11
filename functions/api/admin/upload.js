@@ -1,4 +1,4 @@
-import { json, verifyAdmin } from '../../_lib.js';
+import { json, verifyAdmin } from '../../../src/functions-lib.js';
 export async function onRequestPost({ request, env }) {
   if (!(await verifyAdmin(request, env))) return json({ ok:false, error:'Não autorizado' }, 401);
   if (!env.MEDIA) return json({ ok:false, error:'Binding R2 MEDIA não configurado. Você ainda pode usar uma URL de imagem.' }, 503);
