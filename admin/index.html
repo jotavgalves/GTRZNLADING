@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>La Rumba Jampa · Painel</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<section class="login" id="loginView">
+  <form class="login-card" id="loginForm">
+    <div class="eyebrow">LA RUMBA JAMPA</div>
+    <h1>Painel de edição</h1>
+    <p>Edite a landing sem tocar no código.</p>
+    <div class="field"><label>Senha administrativa</label><input id="password" type="password" autocomplete="current-password" required></div>
+    <button class="btn btn-red btn-full" type="submit">Entrar</button>
+    <div id="loginError" class="error"></div>
+  </form>
+</section>
+<div class="shell hidden" id="appView">
+  <aside class="sidebar">
+    <div class="brand">LA RUMBA <span>CMS</span></div><small>Jampa · 2026</small>
+    <nav class="nav"><a href="#evento">Evento</a><a href="#links">Links</a><a href="#mapa">Mapa</a><a href="#djs">DJs</a><a href="#musica">Música</a><a href="#textos">Textos</a><a href="#secoes">Seções</a></nav>
+    <div class="sidebar-actions"><a class="btn" href="/" target="_blank" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Visualizar site</a><button class="logout" id="logoutBtn">Sair</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><strong>Painel de conteúdo</strong><div class="status" id="status">Carregando…</div></div><div class="top-actions"><button class="btn" id="reloadBtn">Recarregar</button><button class="btn btn-red" id="saveTop">Salvar alterações</button></div></header>
+    <div class="content">
+      <div class="note">O design da landing fica travado. Este painel altera conteúdo, links, mídia, lote, mapa e visibilidade das seções.</div>
+      <section class="section" id="evento"><div class="section-head"><h2>Evento e lote</h2><p>Informações centrais reutilizadas na landing.</p></div><div class="section-body"><div class="grid3"><div class="field"><label>Lote atual</label><input id="lot" type="number" min="1"></div><div class="field"><label>Preço</label><input id="price" type="number" min="0"></div><div class="field"><label>Data/hora ISO</label><input id="date" placeholder="2026-08-29T21:00:00-03:00"></div><div class="field"><label>Data exibida</label><input id="eventDateLabel"></div><div class="field"><label>Horário exibido</label><input id="eventTimeLabel"></div><div class="field"><label>Cidade</label><input id="city"></div></div><div class="field"><label>Nome do local</label><input id="venue"></div></div></section>
+      <section class="section" id="links"><div class="section-head"><h2>Links e contato</h2><p>Os CTAs do site usam estes valores.</p></div><div class="section-body"><div class="grid2"><div class="field"><label>WhatsApp</label><input id="wa"></div><div class="field"><label>Sympla</label><input id="sympla"></div><div class="field"><label>Instagram</label><input id="insta"></div><div class="field"><label>Email</label><input id="email"></div></div></div></section>
+      <section class="section" id="mapa"><div class="section-head"><h2>Localização e Google Maps</h2><p>O iframe é exibido diretamente na seção do Fascynios.</p></div><div class="section-body"><div class="field"><label>Endereço</label><textarea id="address"></textarea></div><div class="grid2"><div class="field"><label>Link “Como chegar”</label><input id="mapLink"></div><div class="field"><label>URL do iframe Google Maps</label><input id="mapEmbedUrl"><div class="help">Aceita URL de embed. O padrão usa ?q=endereço&output=embed e não precisa de API key.</div></div></div><div class="map-preview"><iframe id="mapPreview" loading="lazy"></iframe></div></div></section>
+      <section class="section" id="djs"><div class="section-head"><h2>DJs</h2><p>Use uma URL ou faça upload para R2 quando o binding MEDIA estiver configurado.</p></div><div class="section-body"><div class="photo-row"><div class="photo-preview" id="vognPreview">DJ VOGN</div><div><div class="field"><label>Foto Vogn · URL</label><input id="vognPhoto"></div><div class="upload-line"><input id="vognFile" type="file" accept="image/*"><button class="btn" data-upload="vogn">Enviar foto</button></div><div class="field" style="margin-top:14px"><label>Biografia PT</label><textarea id="vognTextPt"></textarea></div><div class="field"><label>Biografia ES</label><textarea id="vognTextEs"></textarea></div></div></div><hr style="border:0;border-top:1px solid #2b2b2b;margin:26px 0"><div class="photo-row"><div class="photo-preview" id="glitzyPreview">DJ GLITZY</div><div><div class="field"><label>Foto Glitzy · URL</label><input id="glitzyPhoto"></div><div class="upload-line"><input id="glitzyFile" type="file" accept="image/*"><button class="btn" data-upload="glitzy">Enviar foto</button></div><div class="field" style="margin-top:14px"><label>Biografia PT</label><textarea id="glitzyTextPt"></textarea></div><div class="field"><label>Biografia ES</label><textarea id="glitzyTextEs"></textarea></div></div></div></div></section>
+      <section class="section" id="musica"><div class="section-head"><h2>Gêneros</h2><p>Um gênero por linha. A ordem aqui é a ordem da landing.</p></div><div class="section-body grid2"><div class="field"><label>Português</label><textarea class="genres" id="genresPt"></textarea></div><div class="field"><label>Español</label><textarea class="genres" id="genresEs"></textarea></div></div></section>
+      <section class="section" id="textos"><div class="section-head"><h2>Textos bilíngues</h2><p>Textos principais do site. Títulos estruturais permanecem no design.</p></div><div class="section-body"><div class="lang-tabs"><button class="btn active" data-lang="pt">Português</button><button class="btn" data-lang="es">Español</button></div><div class="copy-panel active" data-panel="pt"></div><div class="copy-panel" data-panel="es"></div></div></section>
+      <section class="section" id="secoes"><div class="section-head"><h2>Seções</h2><p>Desligar uma seção oculta o bloco sem apagar seu conteúdo.</p></div><div class="section-body"><div class="switches" id="sectionSwitches"></div></div></section>
+    </div>
+    <button class="btn btn-red sticky-save" id="saveBottom">Salvar alterações</button>
+  </main>
+</div>
+<script src="/admin/admin.js" defer></script>
+</body>
+</html>
