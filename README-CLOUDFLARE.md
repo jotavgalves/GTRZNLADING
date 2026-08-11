@@ -1,21 +1,23 @@
-# La Rumba Jampa — Deploy no Cloudflare Pages
+# La Rumba Jampa — Cloudflare Pages
 
-O repositório está preparado como site estático + Cloudflare Pages Functions.
+Projeto preparado para **Cloudflare Pages + Pages Functions**, com landing pública PT/ES e painel em `/admin/`.
 
 ## Estrutura
 
-- `index.html` — landing pública PT/ES.
-- `admin/index.html` — painel de edição em `/admin`.
-- `functions/api/site.js` — configuração pública da landing.
-- `functions/api/admin/*` — login, leitura, gravação e upload.
-- `functions/media/[[path]].js` — entrega das imagens salvas no R2.
-- `_routes.json` — somente `/api/*` e `/media/*` passam por Functions; os demais assets continuam estáticos.
+- `index.html` — landing pública.
+- `assets/site.css` / `assets/site.js` — frontend responsivo e configuração dinâmica.
+- `assets/djs/` — pasta reservada para fallbacks estáticos dos DJs.
+- `Cards de artistas/` — SVGs das referências musicais.
+- `admin/` — painel de edição.
+- `functions/api/site.js` — configuração pública.
+- `functions/api/admin/*` — login, leitura, gravação e uploads.
+- `functions/media/[[path]].js` — entrega de imagens do R2.
+- `src/functions-lib.js` — configuração padrão, D1 e sessão.
+- `_routes.json` — limita Functions a `/api/*` e `/media/*`.
 
-## 1. Criar o projeto Pages
+## Deploy no Cloudflare Pages
 
-No Cloudflare, importe o repositório `jotavgalves/GTRZNLADING`.
-
-Configuração recomendada:
+Importe `jotavgalves/GTRZNLADING` via integração Git.
 
 - Production branch: `main`
 - Framework preset: nenhum
@@ -23,69 +25,52 @@ Configuração recomendada:
 - Build output directory: `.`
 - Root directory: raiz do repositório
 
-## 2. D1 obrigatório para o painel
+## Bindings e secrets
 
-Crie um banco D1 e adicione ao projeto Pages com o binding `DB`.
+### D1 obrigatório para persistência do painel
+Crie um D1 e vincule com nome **`DB`**. A tabela `site_config` é criada automaticamente.
 
-Não precisa executar migration manual. A primeira chamada ao painel cria automaticamente a tabela `site_config` e grava a configuração padrão.
+### Secrets obrigatórios para login
+- `ADMIN_PASSWORD`
+- `SESSION_SECRET` — use uma string longa e aleatória.
 
-Sem D1, a landing continua abrindo com os valores padrão do HTML, mas o painel não consegue persistir alterações.
+### R2 recomendado para fotos
+Crie um bucket R2 e vincule com nome **`MEDIA`**. O painel salva uploads em `djs/...` e publica via `/media/...`.
 
-## 3. Secrets do painel
+Sem R2, você ainda pode colocar arquivos estáticos em `assets/djs/` e informar no painel caminhos como `/assets/djs/vogn.webp`, ou usar uma URL externa.
 
-Nas variáveis/secrets do projeto configure:
+## Google Maps
 
-- `ADMIN_PASSWORD` — senha usada em `/admin`.
-- `SESSION_SECRET` — string longa e aleatória usada para assinar a sessão.
+A seção do local usa um iframe Google Maps real com `loading="lazy"`. O painel permite:
 
-Exemplo: gere 32 bytes aleatórios com `openssl rand -hex 32` ou um gerenciador de senhas.
+- editar endereço;
+- editar link “Como chegar”;
+- colar uma URL de embed;
+- gerar automaticamente o iframe a partir do endereço.
 
-Nunca grave esses valores no GitHub.
+Se `mapEmbedUrl` ficar vazio, o frontend também gera automaticamente `https://www.google.com/maps?q=ENDERECO&output=embed`.
 
-## 4. R2 para upload das fotos dos DJs
-
-Opcional, mas recomendado.
-
-Crie um bucket R2 e adicione ao projeto Pages com o binding `MEDIA`.
-
-O painel permite subir a foto de Vogn e Glitzy. O upload vai para o R2 e a própria aplicação serve a imagem em `/media/...`.
-
-Se o binding `MEDIA` não existir, o painel continua permitindo colar uma URL de imagem manualmente.
-
-## 5. Google Maps
-
-O painel possui:
-
-- endereço do local;
-- link do botão “Como chegar”;
-- URL do iframe do Google Maps;
-- preview do mapa dentro do admin.
-
-A landing exibe o iframe com `loading="lazy"`.
-
-O valor padrão usa `https://www.google.com/maps?q=...&output=embed`, portanto não exige chave da Google Maps API.
-
-## 6. Painel
-
-Depois do deploy acesse:
-
-`https://SEU-DOMINIO/admin`
-
-No painel é possível editar:
+## O que o painel edita
 
 - lote e preço;
-- data e horário;
+- data/hora e labels exibidas;
 - cidade, local e endereço;
 - WhatsApp, Sympla, Instagram e email;
-- Google Maps;
-- gêneros musicais PT/ES;
-- textos principais PT/ES;
-- biografias de Vogn e Glitzy;
-- fotos dos DJs;
-- ativar/desativar seções.
+- iframe e link do Google Maps;
+- fotos e biografias dos DJs;
+- gêneros PT/ES;
+- títulos, labels, botões, perguntas, respostas e textos PT/ES;
+- conteúdo e velocidade da faixa animada;
+- ordem/visibilidade dos cards de artistas;
+- liga/desliga de cada seção;
+- JSON avançado da configuração completa.
 
-As alterações são gravadas no D1 e aparecem na landing sem novo deploy.
+As alterações são salvas no D1 e aparecem na landing sem novo deploy.
 
-## 7. Depois de criar bindings ou secrets
+## Faixa animada
 
-Faça um novo deploy do projeto Pages para garantir que os bindings estejam disponíveis nas Pages Functions.
+O ticker usa apenas CSS `transform`, com dois segmentos idênticos para loop contínuo e leve. O padrão é **42 s por ciclo** e o painel aceita de 18 a 120 s.
+
+## Após configurar bindings/secrets
+
+Faça um novo deploy do Pages para que os bindings estejam disponíveis às Functions.
