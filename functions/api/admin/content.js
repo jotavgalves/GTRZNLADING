@@ -1,4 +1,4 @@
-import { getConfig, json, saveConfig, verifyAdmin } from '../../_lib.js';
+import { getConfig, json, saveConfig, verifyAdmin } from '../../../src/functions-lib.js';
 export async function onRequestGet({ request, env }) {
   if (!(await verifyAdmin(request, env))) return json({ ok:false, error:'Não autorizado' }, 401);
   try { return json({ ok:true, config:await getConfig(env) }); }
